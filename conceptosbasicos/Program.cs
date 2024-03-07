@@ -30,7 +30,7 @@ namespace conceptosbasicos{
                             switch(option){
                                 case 1: PositivePower.run();
                                     break;
-                                case 2: Console.WriteLine("Sin implementar");
+                                case 2: DoubleOrTriple.run();
                                     break;
                             }
         
