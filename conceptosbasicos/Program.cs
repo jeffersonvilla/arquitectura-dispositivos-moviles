@@ -7,7 +7,6 @@ namespace conceptosbasicos{
         static void Main(){
 
             int option = -1;
-            String? line;
             while(option != 0){
 
                 Console.WriteLine();
@@ -15,47 +14,50 @@ namespace conceptosbasicos{
                 Console.WriteLine("1. Positive Power");
                 Console.WriteLine("2. Double or Triple");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
-                line = Console.ReadLine();
-                bool isValidNumber = int.TryParse(line, out option);
-                if(isValidNumber && option <= 15 && option >= 0){
+                try{
 
-                    if(option == 0) break;
+                    option = int.Parse(Console.ReadLine()); 
 
-                    bool runningOption = true;
-                    while(runningOption){
+                    if(option <= 15 && option >= 0){
 
-                        Console.WriteLine();
-                        Console.WriteLine($"Ejecutando la opcion {option}");
-                        switch(option){
-                            case 1: Console.WriteLine("Sin implementar");
-                                break;
-                            case 2: Console.WriteLine("Sin implementar");
-                                break;
+                        if(option == 0) break;
+
+                        bool runningOption = true;
+                        while(runningOption){
+
+                            Console.WriteLine();
+                            Console.WriteLine($"Ejecutando la opcion {option}");
+                            switch(option){
+                                case 1: PositivePower.run();
+                                    break;
+                                case 2: Console.WriteLine("Sin implementar");
+                                    break;
+                            }
+        
+                            int subOption = -1;
+                            while(subOption != 1 && subOption != 2){
+
+                                Console.WriteLine();
+                                Console.WriteLine("1. Volver a ejecutar");
+                                Console.WriteLine("2. Ir al menu");
+                                Console.WriteLine("Seleccione una opcion: ");
+
+                                subOption = int.Parse(Console.ReadLine());
+                                if(subOption == 2) runningOption = false;
+                            }
+                            
                         }
-    
-                        Console.WriteLine();
-                        Console.WriteLine("1. Volver a ejecutar");
-                        Console.WriteLine("2. Ir al menu");
-                         
-                        Console.WriteLine("Seleccione una opcion: ");
-                        int subOption = -1;
-                        String? subLine = Console.ReadLine();
-                        bool isValidSubOption = int.TryParse(subLine, out subOption);
-                        if(isValidSubOption){
-                            if(subOption == 2) runningOption = false;
-                        }else {
 
-                            Console.WriteLine();Console.WriteLine();
-                            Console.WriteLine("Opcion invalida. Volviendo al menú.");
-                            runningOption = false;
-                        }
-                    }
-
-                }else{
+                    }else{
+                        Console.WriteLine();Console.WriteLine();
+                        Console.WriteLine("Opcion invalida.");
+                        option = -1;
+                    } 
+                }catch(FormatException){
                     Console.WriteLine();Console.WriteLine();
-                    Console.WriteLine("Opcion invalida.");
+                    Console.WriteLine("Opcion invalida. Volviendo al menú.");
                     option = -1;
-                }   
+                }
             }
         }
     }
