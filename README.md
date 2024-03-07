@@ -1,1 +1,1 @@
-"Actividades del curso Arquitectura de Dispositivos M¢viles" 
+# Actividades del curso Arquitectura de Dispositivos MÃ³viles 
