@@ -20,6 +20,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("7. Reminder Finder");
                 Console.WriteLine("8. Sum of Evens");
                 Console.WriteLine("9. Fraction Difference");
+                Console.WriteLine("10. String Length");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -52,6 +53,8 @@ namespace conceptosbasicos{
                                 case 8: SumOfEvens.run();
                                     break;
                                 case 9: FractionDifference.run();
+                                    break;
+                                case 10: StringLength.run();
                                     break;
                             }
         
