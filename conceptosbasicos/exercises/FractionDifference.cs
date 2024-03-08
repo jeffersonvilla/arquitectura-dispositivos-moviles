@@ -18,14 +18,16 @@ namespace conceptosbasicos.exercises{
                 int denominator = int.Parse(first[1]) * int.Parse(second[1]);
 
                 int numerator = (int.Parse(first[0]) * int.Parse(second[1])) - (int.Parse(first[1]) * int.Parse(second[0]));
-                
+
                 int min = Math.Min(denominator, numerator);
                 int max = Math.Max(denominator, numerator);
 
-                int mcd;
-                do{
-                    mcd = min; min = max % min; max = mcd;
-                }while(min != 0);
+                int mcd = 1;
+                if(min != 0){
+                    do{
+                        mcd = min; min = max % min; max = mcd;
+                    }while(min != 0);
+                }
 
                 Console.Write("----------> ");
                 if(numerator != 0) Console.WriteLine($"Resultado: {numerator/mcd}/{denominator/mcd}");   
