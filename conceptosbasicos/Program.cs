@@ -13,6 +13,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("Menú: ");
                 Console.WriteLine("1. Positive Power");
                 Console.WriteLine("2. Double or Triple");
+                Console.WriteLine("3. Root or Square");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -31,6 +32,8 @@ namespace conceptosbasicos{
                                 case 1: PositivePower.run();
                                     break;
                                 case 2: DoubleOrTriple.run();
+                                    break;
+                                case 3: RootOrSquare.run();
                                     break;
                             }
         
