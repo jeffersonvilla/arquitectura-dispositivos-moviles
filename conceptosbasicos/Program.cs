@@ -15,6 +15,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("2. Double or Triple");
                 Console.WriteLine("3. Root or Square");
                 Console.WriteLine("4. Circle Perimeter");
+                Console.WriteLine("5. Midweek Day");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -37,6 +38,8 @@ namespace conceptosbasicos{
                                 case 3: RootOrSquare.run();
                                     break;
                                 case 4: CirclePerimeter.run();
+                                    break;
+                                case 5: MidweekDay.run();
                                     break;
                             }
         
