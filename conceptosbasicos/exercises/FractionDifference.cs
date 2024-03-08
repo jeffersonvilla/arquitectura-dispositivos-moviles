@@ -32,7 +32,7 @@ namespace conceptosbasicos.exercises{
                 else Console.WriteLine($"Resultado: 0");   
 
             }catch(FormatException){
-                Console.WriteLine("Debe ingresar numeros enteros.");
+                Console.WriteLine("Debe ingresar numeros enteros en numerador y dominador de ambas fracciones.");
             }
         }
     }
