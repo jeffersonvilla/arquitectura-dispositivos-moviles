@@ -19,6 +19,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("6. Tax Calculator");
                 Console.WriteLine("7. Reminder Finder");
                 Console.WriteLine("8. Sum of Evens");
+                Console.WriteLine("9. Fraction Difference");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -49,6 +50,8 @@ namespace conceptosbasicos{
                                 case 7: ReminderFinder.run();
                                     break;
                                 case 8: SumOfEvens.run();
+                                    break;
+                                case 9: FractionDifference.run();
                                     break;
                             }
         
