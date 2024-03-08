@@ -24,6 +24,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("11. Average of Four");
                 Console.WriteLine("12. Smallest of Five");
                 Console.WriteLine("13. Vowel Counter");
+                Console.WriteLine("14. Factorial Finder");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -64,6 +65,8 @@ namespace conceptosbasicos{
                                 case 12: SmallestOfFive.run();
                                     break;
                                 case 13: VowelCounter.run();
+                                    break;
+                                case 14: FactorialFinder.run();
                                     break;
                             }
         
