@@ -17,6 +17,7 @@ namespace conceptosbasicos{
                 Console.WriteLine("4. Circle Perimeter");
                 Console.WriteLine("5. Midweek Day");
                 Console.WriteLine("6. Tax Calculator");
+                Console.WriteLine("7. Reminder Finder");
                 Console.WriteLine("Ingrese el numero de la opcion que desea usar, (0 para salir):");
                 try{
 
@@ -43,6 +44,8 @@ namespace conceptosbasicos{
                                 case 5: MidweekDay.run();
                                     break;
                                 case 6: TaxCalculator.run();
+                                    break;
+                                case 7: ReminderFinder.run();
                                     break;
                             }
         
