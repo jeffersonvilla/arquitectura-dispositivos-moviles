@@ -13,10 +13,15 @@ namespace conceptosbasicos.exercises{
                 Console.Write("Ingrese el segundo numero: ");
                 int second = int.Parse(Console.ReadLine());
 
-                int result = first % second;
-                
-                Console.Write("----------> ");
-                Console.WriteLine($"Resultado: {result}");   
+                if(second != 0) {
+
+                    int result = first % second;
+                    
+                    Console.Write("----------> ");
+                    Console.WriteLine($"Resultado: {result}");   
+                }else{
+                    Console.WriteLine("El segundo no debe ser 0.");
+                }
 
             }catch(FormatException){
                 Console.WriteLine("Debe ingresar numeros enteros.");
