@@ -13,7 +13,7 @@ namespace conceptosbasicos.exercises{
                 Console.Write("Ingrese el segundo numero: ");
                 int second = int.Parse(Console.ReadLine());
 
-                int result = (first >= second)? first * 2: second * 3;
+                int result = (first > second)? first * 2: second * 3;
                 
                 Console.Write("----------> ");
                 Console.WriteLine($"Resultado: {result}");   
