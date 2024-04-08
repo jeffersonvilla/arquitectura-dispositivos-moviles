@@ -54,7 +54,7 @@ namespace LibreriaDigital.WebApi.Controllers
                 return BadRequest();
             }
             _repository.Update(user);
-            return NoContent();
+            return Ok();
         }
 
         // DELETE api/<UsersController>/5
@@ -62,7 +62,7 @@ namespace LibreriaDigital.WebApi.Controllers
         public ActionResult Delete(int id)
         {
             _repository.Delete(id);
-            return NoContent();
+            return Ok();
         }
     }
 }

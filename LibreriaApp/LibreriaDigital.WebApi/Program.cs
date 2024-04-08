@@ -1,5 +1,6 @@
 using LibreriaDigital.WebApi.Models;
 using LibreriaDigital.WebApi.Repository;
+using LibreriaDigital.WebApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<LibreriaAppDbContext>(options =>
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
 builder.Services.AddScoped(typeof(DbContext), typeof(LibreriaAppDbContext));
+builder.Services.AddScoped(typeof(IBooksService), typeof(BooksService));
 
 var app = builder.Build();
 

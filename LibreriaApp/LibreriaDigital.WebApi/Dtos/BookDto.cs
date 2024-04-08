@@ -1,12 +1,11 @@
-﻿namespace LibreriaDigital.WebApi.Models
+﻿namespace LibreriaDigital.WebApi.Dtos
 {
-    public class Book
+    public class BookDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public int PublicationYear { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
     }
 }
