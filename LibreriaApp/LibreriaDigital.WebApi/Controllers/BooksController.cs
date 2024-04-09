@@ -30,9 +30,9 @@ namespace LibreriaDigital.WebApi.Controllers
             {
                 return Ok(_service.GetAll());
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
            
         }
@@ -49,9 +49,9 @@ namespace LibreriaDigital.WebApi.Controllers
             {
                 return NotFound(bnf.Message);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -68,29 +68,52 @@ namespace LibreriaDigital.WebApi.Controllers
             {
                 return BadRequest(unf.Message);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] BookDto book)
+        public ActionResult Put(int id, [FromBody] BookDto bookDto)
         {
-            /*if (id != book.Id) {
-                return BadRequest();   
+            bookDto.Id = id;
+            try
+            {
+                return Ok(_service.update(bookDto));
             }
-            _bookRepository.Update(book);
-            */return Ok();
+            catch(BookNotFoundException bnf)
+            {
+                return NotFound(bnf.Message);
+            }
+            catch(BookPutRequestInvalidUserException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE api/<BooksController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            //_bookRepository.Delete(id);
-            return Ok();
+            try
+            {
+                _service.delete(id);
+                return Ok("Book with id " + id + " deleted successfully");
+            }
+            catch (BookNotFoundException bnf)
+            {
+                return NotFound(bnf.Message);
+            }
+            catch (Exception) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

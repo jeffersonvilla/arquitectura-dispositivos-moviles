@@ -35,7 +35,12 @@ namespace LibreriaDigital.WebApi.Services
 
         public void delete(int id)
         {
-            throw new NotImplementedException();
+            Book book = _bookRepository.GetById(id);
+            if(book == null)
+            {
+                throw new BookNotFoundException("Book with id " + id + " not found");
+            }
+            _bookRepository.Delete(id);
         }
 
         public IEnumerable<BookDto> GetAll()
@@ -58,9 +63,25 @@ namespace LibreriaDigital.WebApi.Services
             return mapToBookDTO(book);
         }
 
-        public BookDto update(BookDto book)
+        public BookDto update(BookDto bookDto)
         {
-            throw new NotImplementedException();
+            Book book = _bookRepository.GetById(bookDto.Id);
+
+            if(book == null)
+            {
+                throw new BookNotFoundException("Book with id " + bookDto.Id + " not found");
+            }
+            if(book.UserId != bookDto.UserId)
+            {
+                throw new BookPutRequestInvalidUserException("User with id " + bookDto.UserId + " doesn't have access to book with id " + bookDto.Id);
+            }
+
+            book.Title = bookDto.Title;
+            book.Author = bookDto.Author;
+            book.PublicationYear = bookDto.PublicationYear;
+
+            _bookRepository.Update(book);
+            return mapToBookDTO(book);
         }
 
         private Book mapBookFromDTO(BookDto bookdto) 
