@@ -4,7 +4,6 @@ using LibreriaDigital.WebApi.Repository;
 using LibreriaDigital.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LibreriaDigital.WebApi.Controllers
 {
@@ -59,6 +58,10 @@ namespace LibreriaDigital.WebApi.Controllers
             try
             {
                 return Ok(_service.Add(user));
+            }
+            catch (InvalidEmailException e) 
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception)
             {

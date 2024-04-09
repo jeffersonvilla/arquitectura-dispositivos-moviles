@@ -53,6 +53,22 @@ namespace LibreriaDigital.WebApi.Services
             return response;
         }
 
+        public IEnumerable<BookDto> GetAllByUserId(int id)
+        {
+            User user = _userRepository.GetById(id);
+            if(user == null)
+            {
+                throw new UserNotFoundException("User with id " + id + " not found");
+            }
+
+            List<BookDto> response = new List<BookDto>();
+            foreach (Book book in _bookRepository.GetAllByColumn(b => b.UserId == id))
+            {
+                response.Add(mapToBookDTO(book));
+            }
+            return response;
+        }
+
         public BookDto GetById(int id)
         {
             var book = _bookRepository.GetById(id);

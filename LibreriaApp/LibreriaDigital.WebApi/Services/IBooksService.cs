@@ -10,5 +10,6 @@ namespace LibreriaDigital.WebApi.Services
         public BookDto Add(BookDto book);
         public BookDto update(BookDto book);
         public void delete(int id);
+        public IEnumerable<BookDto> GetAllByUserId(int id);
     }
 }

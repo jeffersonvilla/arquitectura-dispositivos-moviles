@@ -38,12 +38,22 @@ namespace LibreriaDigital.WebApi.Repository
 
         public void Delete(int id)
         {
-            var user = _dbSet.Find(id);
-            if(user != null)
+            var entity = _dbSet.Find(id);
+            if(entity != null)
             {
-                _dbSet.Remove(user);
+                _dbSet.Remove(entity);
                 _context.SaveChanges();
             }
+        }
+
+        public T GetByColumn(Func<T, bool> filter)
+        {
+            return _dbSet.FirstOrDefault(filter, null);
+        }
+
+        public IEnumerable<T> GetAllByColumn(Func<T, bool> filter)
+        {
+            return _dbSet.Where(filter).ToList();
         }
     }
 }

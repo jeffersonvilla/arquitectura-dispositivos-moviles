@@ -7,5 +7,7 @@
         void Add(T entity);
         void Update(T entity);
         void Delete(int id);
+        T GetByColumn(Func<T, bool> filter);
+        IEnumerable<T> GetAllByColumn(Func<T, bool> filter);
     }
 }

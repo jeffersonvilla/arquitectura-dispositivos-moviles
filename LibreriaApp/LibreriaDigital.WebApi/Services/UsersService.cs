@@ -15,6 +15,11 @@ namespace LibreriaDigital.WebApi.Services
 
         public User Add(User user)
         {
+            User userFound = _usersRepository.GetByColumn(u=>u.Email == user.Email);
+            if (userFound != null) 
+            {
+                throw new InvalidEmailException("Email " + user.Email + " is already used");
+            }
             _usersRepository.Add(user);
             return user;
         }
