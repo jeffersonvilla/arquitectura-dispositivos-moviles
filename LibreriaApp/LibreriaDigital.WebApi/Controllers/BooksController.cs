@@ -131,5 +131,28 @@ namespace LibreriaDigital.WebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpPost("rate/review/")]
+        public ActionResult RateBook([FromBody] RateAndReviewDto dto)
+        {
+            try
+            {
+                _service.RateAndReviewBook(dto);
+                return Ok("Book with id " + dto.bookId + " rated and reviewed successfully");
+            }
+            catch (InvalidRateException e) 
+            {
+                return BadRequest(e.Message);
+            }
+            catch (BookNotFoundException bnf)
+            {
+                return NotFound(bnf.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
     }
 }

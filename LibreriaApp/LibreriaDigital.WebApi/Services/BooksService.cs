@@ -17,20 +17,20 @@ namespace LibreriaDigital.WebApi.Services
             _userRepository = userRepository;
         }
 
-        public BookDto Add(BookDto bookdto)
+        public BookDto Add(BookDto bookDto)
         {
-            User user = _userRepository.GetById(bookdto.UserId);
+            User user = _userRepository.GetById(bookDto.UserId);
             if(user == null)
             {
-                throw new UserNotFoundException("User with id " + bookdto.UserId + " not found");
+                throw new UserNotFoundException("User with id " + bookDto.UserId + " not found");
             }
-            Book book = mapBookFromDTO(bookdto);
+            Book book = mapBookFromDTO(bookDto);
             book.User = user;
 
             _bookRepository.Add(book);
 
-            bookdto.Id = book.Id;
-            return bookdto;
+            bookDto.Id = book.Id;
+            return bookDto;
         }
 
         public void delete(int id)
@@ -79,6 +79,30 @@ namespace LibreriaDigital.WebApi.Services
             return mapToBookDTO(book);
         }
 
+        public void RateAndReviewBook(RateAndReviewDto dto)
+        {
+            Book book = _bookRepository.GetByColumn(b=>b.Id == dto.bookId && b.UserId == dto.userId);
+            if (book == null) 
+            {
+                throw new BookNotFoundException("Book with id " + dto.bookId + " of user wiht id " + dto.userId + " not found");
+            }
+
+            if (dto.rating != -1 && (dto.rating < 1 || dto.rating > 5))
+            {
+                throw new InvalidRateException("Rating must be from 1 to 5");
+            }
+
+            if (dto.rating != -1)
+            {            
+                book.rating = dto.rating;
+            }
+            if (dto.review != "") 
+            { 
+                book.review = dto.review;
+            }
+            _bookRepository.Update(book);
+        }
+
         public BookDto update(BookDto bookDto)
         {
             Book book = _bookRepository.GetById(bookDto.Id);
@@ -92,21 +116,40 @@ namespace LibreriaDigital.WebApi.Services
                 throw new BookPutRequestInvalidUserException("User with id " + bookDto.UserId + " doesn't have access to book with id " + bookDto.Id);
             }
 
-            book.Title = bookDto.Title;
-            book.Author = bookDto.Author;
-            book.PublicationYear = bookDto.PublicationYear;
+            if (bookDto.Title != "")
+            {                
+                book.Title = bookDto.Title;
+            }
+            if (bookDto.Author != "")
+            {
+                book.Author = bookDto.Author;
+            }
+            if (bookDto.PublicationYear != 0)
+            {
+                book.PublicationYear = bookDto.PublicationYear;
+            }
+            if (bookDto.rating != 0)
+            {
+                book.rating = bookDto.rating;
+            }
+            if(bookDto.review != "")
+            {
+                book.review = bookDto.review;
+            }
 
             _bookRepository.Update(book);
             return mapToBookDTO(book);
         }
 
-        private Book mapBookFromDTO(BookDto bookdto) 
+        private Book mapBookFromDTO(BookDto bookDto) 
         {
             Book book = new Book();
-            book.Title = bookdto.Title;
-            book.Author = bookdto.Author;
-            book.PublicationYear = bookdto.PublicationYear;
-            book.UserId = bookdto.UserId;
+            book.Title = bookDto.Title;
+            book.Author = bookDto.Author;
+            book.PublicationYear = bookDto.PublicationYear;
+            book.UserId = bookDto.UserId;
+            book.rating = bookDto.rating;
+            book.review = bookDto.review;
             return book;
         }
 
@@ -117,6 +160,8 @@ namespace LibreriaDigital.WebApi.Services
             bookDto.Author = book.Author;
             bookDto.PublicationYear = book.PublicationYear;
             bookDto.UserId = book.UserId;
+            bookDto.rating = book.rating;
+            bookDto.review = book.review;
             return bookDto;
         }
     }
