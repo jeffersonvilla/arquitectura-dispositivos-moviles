@@ -1,5 +1,7 @@
-﻿using LibreriaDigital.WebApi.Models;
+﻿using LibreriaDigital.WebApi.Exceptions;
+using LibreriaDigital.WebApi.Models;
 using LibreriaDigital.WebApi.Repository;
+using LibreriaDigital.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,58 +13,95 @@ namespace LibreriaDigital.WebApi.Controllers
     public class UsersController : ControllerBase
     {
 
-        private IRepository<User> _repository;
+        private IUsersService _service;
 
-        public UsersController(IRepository<User> repository)
+        public UsersController(IUsersService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         // GET: api/<UsersController>
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return Ok(_repository.GetAll());
+            try
+            {
+                return Ok(_service.GetAll());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            var user = _repository.GetById(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                return Ok(_service.GetById(id));
             }
-            return Ok(user);
+            catch (UserNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST api/<UsersController>
         [HttpPost]
         public ActionResult Post([FromBody] User user)
         {
-            _repository.Add(user);
-            return CreatedAtAction(nameof(Get), new {id = user.Id});
+            try
+            {
+                return Ok(_service.Add(user));
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] User user)
         {
-            if (id != user.Id)
+            user.Id = id;
+            try
             {
-                return BadRequest();
+                return Ok(_service.update(user));
             }
-            _repository.Update(user);
-            return Ok();
+            catch(UserPutRequestInvalidEmailException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            _repository.Delete(id);
-            return Ok();
+            try
+            {
+                _service.delete(id);
+                return Ok();
+            }
+            catch (UserNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ builder.Services.AddDbContext<LibreriaAppDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EntityFrameworkRepository<>));
 builder.Services.AddScoped(typeof(DbContext), typeof(LibreriaAppDbContext));
 builder.Services.AddScoped(typeof(IBooksService), typeof(BooksService));
+builder.Services.AddScoped(typeof(IUsersService), typeof(UsersService));
 
 var app = builder.Build();
 
