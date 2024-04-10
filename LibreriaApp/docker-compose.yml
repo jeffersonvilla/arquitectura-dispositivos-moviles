@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  libreria-digital-app-api:
+    image: libreria-digital-app-api
+    build: 
+      context: ./LibreriaDigital.WebApi
+      dockerfile: Dockerfile
+    ports:
+      - "8980:8080"
+    networks:
+      - mynetwork
+  libreria-digital-sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
+    container_name: libreria-digital-sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - SA_PASSWORD=Password123456+
+      - ACCEPT_EULA=Y
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
