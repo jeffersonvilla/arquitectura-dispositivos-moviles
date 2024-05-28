@@ -1,0 +1,58 @@
+type Query {
+  getProductsByCriteria(filter: ProductFilterInput): [Product!]!
+  getProductById(id: ID!): Product
+  cart: Cart!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+  category: String!
+  stock: Int!
+}
+
+input ProductFilterInput {
+  category: String
+  name: String
+  minPrice: Float
+  maxPrice: Float
+}
+
+type Mutation {
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  deleteProduct(id: ID!): Boolean!
+}
+
+input CreateProductInput {
+  name: String!
+  price: Float!
+  category: String!
+  stock: Int!
+}
+
+input UpdateProductInput {
+  name: String
+  price: Float
+  category: String
+  stock: Int
+}
+
+type CartItem {
+  product: Product!
+  quantity: Int!
+}
+
+type Cart {
+  items: [CartItem!]!
+  totalQuantity: Int!
+  totalPrice: Float!
+}
+
+type Mutation {
+  addToCart(productId: ID!, quantity: Int!): CartItem!
+  removeFromCart(productId: ID!): CartItem!
+  updateCartItemQuantity(productId: ID!, quantity: Int!): CartItem!
+  clearCart: Cart!
+}

@@ -1,1 +1,3 @@
-# Actividades del curso Arquitectura de Dispositivos Móviles 
+# Actividad del curso Arquitectura de Dispositivos Móviles 
+
+## Graphql

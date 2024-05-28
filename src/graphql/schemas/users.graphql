@@ -1,0 +1,17 @@
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    token: String
+    cart: Cart
+}
+
+type Query {
+    user: User
+}
+
+type Mutation {
+    register(username: String!, email: String!, password: String!): User!
+    login(email: String!, password: String!): User!
+    logout: Boolean!
+}
