@@ -1,6 +1,6 @@
 # Proyecto E-commerce
 
-Este proyecto consiste en un sistema de e-commerce con un backend y un frontend, ambos ejecutándose en contenedores Docker. El backend utiliza una base de datos MongoDB.
+Este proyecto consiste en un sistema de e-commerce con un backend (graphql) y un frontend, ambos ejecutándose en contenedores Docker. El backend utiliza una base de datos MongoDB.
 
 ## Requisitos
 
