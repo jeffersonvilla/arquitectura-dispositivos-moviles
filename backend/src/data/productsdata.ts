@@ -10,3 +10,4 @@ export const productsDataSource = [
   { "id": "9", "name": "Cookware Set", "price": 100, "category": "Kitchen", "stock": 5 },
   { "id": "10", "name": "Running Shoes", "price": 80, "category": "Sports", "stock": 18 },
 ];
+
