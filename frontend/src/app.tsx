@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import Register from './components/Register';
 import Login from './components/Login';
@@ -29,7 +29,7 @@ const App: React.FC = () => {
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}> 
                         {!isAuthenticated ? (
                             <>
-                                <Menu.Item key="1"><Link to="/">E-Commerce</Link></Menu.Item>                        
+                                <Menu.Item key="1"><Link to="/"></Link></Menu.Item>                        
                                 <Menu.Item key="2"><Link to="/register">Register</Link></Menu.Item>
                                 <Menu.Item key="3"><Link to="/login">Login</Link></Menu.Item>
                             </>
@@ -45,7 +45,7 @@ const App: React.FC = () => {
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated}/>} />
                         <Route path="/main" element={<Main />} />
-                        <Route path="/" element={<h1>Welcome to the App</h1>} />
+                        <Route path="/" element={<Navigate to="/login" />} />
                     </Routes>
                 </Content>
             </Layout>

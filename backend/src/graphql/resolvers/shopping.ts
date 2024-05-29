@@ -78,13 +78,16 @@ const shoppingResolvers: IResolvers = {
             if (quantity > product.stock) throw new Error('Quantity must be less or equal to stock');
 
             const userCart = context.user.cart;
-            const existingItem = userCart.items.find((item: CartItem) => item.product._id === productId);
+            const existingItemIndex = userCart.items.findIndex(
+                (item: CartItem) => item.product._id.toString() === new ObjectId(productId).toString());
 
-            if (existingItem) {
-                if (existingItem.quantity + quantity > product.stock) {
+            if (existingItemIndex !== -1) {
+                const existingItem = userCart.items[existingItemIndex];
+                const newQuantity = existingItem.quantity + quantity;
+                if (newQuantity > product.stock) {
                     throw new Error('Quantity must be less or equal to stock');
                 }
-                existingItem.quantity += quantity;
+                existingItem.quantity = newQuantity;
             } else {
                 userCart.items.push({ product, quantity });
             }

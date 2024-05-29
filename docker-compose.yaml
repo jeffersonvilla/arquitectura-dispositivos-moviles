@@ -1,6 +1,6 @@
 version: "3"
 services:
-  app:
+  backend_ecommerce:
     build:
       context: ./backend
       dockerfile: .Dockerfile
@@ -20,7 +20,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=secret
-  fe_test:
+      
+  frontend_ecommerce:
     build:
       context: ./frontend
       dockerfile: .Dockerfile

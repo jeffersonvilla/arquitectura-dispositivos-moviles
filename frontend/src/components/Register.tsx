@@ -2,29 +2,25 @@ import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import RedirectAuth from './RedirectAuth';
+import { registerUserMutation } from '../queriesAndMutations/users';
 
 
 const Register: React.FC = () => {
+    RedirectAuth();
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
     const onFinish = async (values: any) => {
         try {
-            const mutation = `
-              mutation Register($username: String!, $email: String!, $password: String!) {
-                register(username: $username, email: $email, password: $password)
-              }
-            `;
-
-            const variables = {
-                username: values.username,
-                email: values.email,
-                password: values.password,
-            };
-
+            
             const response = await axios.post('http://localhost:37111/graphql', {
-                query: mutation,
-                variables,
+                query: registerUserMutation,
+                variables: {
+                    username: values.username,
+                    email: values.email,
+                    password: values.password,
+                }
             });
 
             const { data } = response; 
