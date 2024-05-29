@@ -5,6 +5,12 @@ import axiosConfig from '../axiosConfig';
 import { getProductsQuery } from '../queriesAndMutations/products';
 import { addToCartMutation } from '../queriesAndMutations/cart';
 
+/**
+ * Componente para listar los productos en base de datos
+ * Con funcionalidad para agregar productos al carrito de compras del usuario
+ * 
+ * Emplea los query y mutaciones definidos en el folder queriesAndMutations (cart, products)
+ */
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -12,6 +18,9 @@ const ProductList: React.FC = () => {
     const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
 
+    /**
+     * Obtiene todos los productos de la base de datos
+     */
     const fetchProducts = async () => {
         try {
 
@@ -26,6 +35,9 @@ const ProductList: React.FC = () => {
         }
     };
 
+    /**
+     * Actualiza la lista de productos cada 4 segundos
+     */
     useEffect(() => {
 
         fetchProducts();
@@ -38,6 +50,10 @@ const ProductList: React.FC = () => {
 
     }, []);
 
+    /**
+     * Agrega el producto al carrito en base al id 
+     * y pasando la cantidad que desea agregar
+     */
     const handleAddToCart = async (productId: string) => {
         try {
             const quantity = quantities[productId] || 1;

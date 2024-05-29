@@ -7,9 +7,18 @@ import Main from './components/Main';
 
 const { Header, Content } = Layout;
 
+/**
+ * Componente que contine la barra de menu con opciones para ir a la 
+ * funcionalidad de registrarse, hacer login o logout
+ * 
+ */
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    /**
+     * Obtiene el token jwt de localStorage 
+     * en caso de que exista el token marca el usuario como autenticado
+     */
     useEffect(() => {
         const token = localStorage.getItem('jwt');
         if (token) {
@@ -17,6 +26,11 @@ const App: React.FC = () => {
         }
     }, []);
 
+    /**
+     * Remueve el token jwt del localStorage
+     * 
+     * Marca el usuario como no autenticado
+     */
     const handleLogout = () => {
         localStorage.removeItem('jwt');
         setIsAuthenticated(false);

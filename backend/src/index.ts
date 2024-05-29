@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express from "express";
 import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import { schema } from "./graphql";
@@ -11,10 +11,13 @@ require('dotenv').config();
 const app = express() as any;
 app.use(cors());
 
-
+//String de 256 caracteres para generar y verificar tokens JWT
 const JWT_SECRET = process.env.JWT_SECRET;
 
-
+/**
+ * Crea un usuario por default en la base de datos
+ * con rol de administrador 
+ */
 const initializeAdminInDb = async (db: Db) => {
 
   try {
@@ -25,7 +28,7 @@ const initializeAdminInDb = async (db: Db) => {
       const admin = {
         username: 'admin',
         email: 'admin@correo',
-        password: '$2a$10$FzHHR9aVCQk6lpI9ibA5POYmexzSvmDShPeEVJZsPDNlHFm0HjczK',//this is the word 'password' hashed
+        password: '$2a$10$FzHHR9aVCQk6lpI9ibA5POYmexzSvmDShPeEVJZsPDNlHFm0HjczK',//la contraseña es 'password' 
         role: 'admin',
         cart: {
           items: [],
@@ -42,6 +45,16 @@ const initializeAdminInDb = async (db: Db) => {
   } 
 };
 
+/**
+ * Middleware usado para validar el token JWT recibido del frontend
+ * 
+ * Para permitir o impedir el acceso a las diferentes 
+ * funcionalidades segun el rol del usuario
+ * 
+ * Tambien es sirve para iniciar la conexion a mongodb
+ * 
+ * Retorna el usuario (si el token JWT es valido) y la conexion a mondodb
+ */
 const contextMiddleware = async ({ req }: any) => {
   const authorization = req.headers.authorization || '';
 
@@ -65,13 +78,11 @@ const contextMiddleware = async ({ req }: any) => {
 
       const user = await mongodb.collection('users').findOne({_id: new ObjectId(decoded.userId)});
       
-      //usersDataSource.find(user => user.id === decoded.userId);
       return { user:user, db: mongodb };
     } catch (e) {
       throw new Error('Session expired. Sign in again.');
     }
   }
-
 
   return {db: mongodb};
 };
@@ -85,6 +96,9 @@ const server = new ApolloServer({
   context: contextMiddleware,
 });
 
+/**
+ * Inicia el servidor backend en el puerto 4000 
+ */
 server.start().then(res => {
   server.applyMiddleware({ app });
 

@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+/**
+ * Crea una instancia de axios con la url del backend 
+ */
 const axiosConfig = axios.create({
   baseURL: 'http://localhost:37111/graphql',
   headers: {
@@ -7,7 +10,11 @@ const axiosConfig = axios.create({
   },
 });
 
-
+/**
+ * Agrega funcionlidad a la instancia de axios para enviar el 
+ * token jwt (en caso de que exista en localStorage)
+ * en cada request realizado por esta instancia
+ */
 axiosConfig.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jwt');

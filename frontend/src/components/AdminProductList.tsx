@@ -4,6 +4,12 @@ import { List, Button, Modal, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { createProductMutation, deleteProductMutation, getProductsQuery, updateProductMutation } from '../queriesAndMutations/products';
 
+/**
+ * Componente para listar los productos en base de datos
+ * Con funcionalidad para Crear, Actualizar y Eliminar productos
+ * 
+ * Emplea los query y mutaciones definidos en el folder queriesAndMutations (products)
+ */
 const AdminProductList: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -14,9 +20,13 @@ const AdminProductList: React.FC = () => {
     const [formCreate] = Form.useForm();
 
 
+    /**
+     * Trae todos los productos de la base de datos
+     */
     const fetchProducts = async () => {
         try {
 
+            //Realiza el request (sin pasar token jwt) 
             const response = await axios.post('http://localhost:37111/graphql', { query: getProductsQuery });
 
             setProducts(response.data.data.getProductsByCriteria);
@@ -27,6 +37,9 @@ const AdminProductList: React.FC = () => {
         }
     };
 
+    /**
+     * Actualiza la lista de productos cada 4 segundos
+     */
     useEffect(() => {
 
         fetchProducts();
@@ -38,6 +51,9 @@ const AdminProductList: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
+    /**
+     * Elimina un producto usando el id
+     */
     const handleDeleteProduct = async (productId: string) => {
         try {
 
@@ -49,6 +65,9 @@ const AdminProductList: React.FC = () => {
         }
     };
 
+    /** 
+     * Actualiza un producto con los valores recibidos del formulario
+    */
     const handleUpdateProduct = async (values: any) => {
         try {
 
@@ -75,6 +94,9 @@ const AdminProductList: React.FC = () => {
         setVisibleUpdate(false);
     };
 
+    /**
+     * Crea un nuevo producto con los valores recibidos del formulario
+     */
     const handleCreateProduct = async (values: any) => {
         try {
 

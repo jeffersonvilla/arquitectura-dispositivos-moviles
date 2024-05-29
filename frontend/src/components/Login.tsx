@@ -5,16 +5,37 @@ import { useNavigate } from 'react-router-dom';
 import RedirectAuth from './RedirectAuth';
 import { logingUserMutation } from '../queriesAndMutations/users';
 
+/**
+ * Inteface usada para recibir la funcion isAuthenticated
+ */
 interface LoginProps {
     setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
+/**
+ * Componente con el formulario para realizar login en la plataforma
+ * 
+ * Recibe la funcion setIsAuthenticated para notificar al componente padre
+ * sobre el exito de la autenticación
+ * 
+ * Emplea los query y mutaciones definidos en el folder queriesAndMutations (user)
+ */
 const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
+
+    //Redirecciona al componente Main si hay un token jwt en localStorage
     RedirectAuth();
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
+
+    /**
+     * Realiza el request para autenticar el usuario
+     * 
+     * Muestra mensajes de error en caso de credenciales incorrectas
+     * 
+     * Redirecciona al componente Main en caso de login exitoso
+     */
     const onFinish = async (values: any) => {
         try {
 

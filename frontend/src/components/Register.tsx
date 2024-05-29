@@ -5,12 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import RedirectAuth from './RedirectAuth';
 import { registerUserMutation } from '../queriesAndMutations/users';
 
-
+/**
+ * Componente con el formulario para registar un nuevo usuario
+ * 
+ * Emplea los query y mutaciones definidos en el folder queriesAndMutations (user)
+ */
 const Register: React.FC = () => {
+
+    //Redirecciona al componente Main si hay un token jwt en localStorage
     RedirectAuth();
+
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
+    /**
+     * Realiza el request para registar el usuario
+     * 
+     * En caso de exito, redirecciona al componente Login
+     */
     const onFinish = async (values: any) => {
         try {
             

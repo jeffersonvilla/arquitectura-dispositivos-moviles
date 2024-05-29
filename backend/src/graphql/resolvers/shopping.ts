@@ -2,8 +2,19 @@ import { IResolvers } from '@graphql-tools/utils';
 import { CartItem } from '../../model/CartItem';
 import { Db, ObjectId } from 'mongodb';
 
+/**
+ * Resolver para las queries que tienen que ver con los productos y el carrito de compras
+ */
 const shoppingResolvers: IResolvers = {
     Query: {
+        /**
+         * Retorna los productos existentes en base de datos
+         * Se pueden aplicar filtros con criterios como: categoria, nombre, precio(minimo y maximo)
+         * 
+         * Si no se pasan filtros retorna todos los productos en base de datos
+         * 
+         * Se puede usar sin autenticar
+         */
         getProductsByCriteria: async (parent, args, context: { db: Db }) => {
             let query = {};
 
@@ -20,11 +31,22 @@ const shoppingResolvers: IResolvers = {
             const products = await context.db.collection('products').find(query).toArray();
             return products;
         },
+        /**
+         * Retorna la información de un producto es especifico en base al id
+         * 
+         * Se puede usar sin autenticar
+         */
         getProductById: async (parent, { id }, context: { db: Db }) => {
             const product = await context.db.collection('products').findOne({ _id: new ObjectId(id) });
             if (!product) throw new Error('Product not found');
             return product;
         },
+        /**
+         * Retorna el carrito de compras de un usuario en especifico
+         * 
+         * Debe estar autenticado como 'user' para poder usarse
+         * Los admin no pueden ver su carrito de compras
+         */
         cart: async (parent, args, context:{user: any}) => {
             if (!context.user || context.user.role != 'user') {
                 throw new Error('Not authenticated as user');
@@ -33,6 +55,11 @@ const shoppingResolvers: IResolvers = {
         },
     },
     Mutation: {
+        /**
+         * Registra un nuevo producto en la base de datos
+         * 
+         * Debe estar autenticado como 'admin'
+         */
         createProduct: async (parent, { input }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'admin') {
                 throw new Error('Not authorized');
@@ -44,6 +71,11 @@ const shoppingResolvers: IResolvers = {
             await context.db.collection('products').insertOne(newProduct);
             return newProduct;
         },
+        /**
+         * Actualiza la información de un producto en base de datos por medio de su id
+         * 
+         * Debe estar autenticado como 'admin'
+         */
         updateProduct: async (parent, { id, input }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'admin') {
                 throw new Error('Not authorized');
@@ -59,6 +91,11 @@ const shoppingResolvers: IResolvers = {
             return result;
             
         },
+        /**
+         * Elimina un producto de la base de datos por medio del id
+         * 
+         * Debe estar autenticado como 'admin'
+         */
         deleteProduct: async (parent, { id }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'admin') {
                 throw new Error('Not authorized');
@@ -68,6 +105,16 @@ const shoppingResolvers: IResolvers = {
             if (result.deletedCount === 0) throw new Error('Product not found');
             return true;
         },
+        /**
+         * Agrega un producto al carrito de compra del usuario
+         * 
+         * Si el producto ya existe en el carrito, se suma
+         * la nueva catindad del producto al carrito
+         * 
+         * Actualiza el precio total del carrito y la cantidad total de items
+         * 
+         * Debe estar autenticado como 'user'
+         */
         addToCart: async (parent, { productId, quantity = 1 }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'user') {
                 throw new Error('Not authenticated as user');
@@ -102,6 +149,13 @@ const shoppingResolvers: IResolvers = {
 
             return { product, quantity };
         },
+        /**
+         * Elimina un producto del carrito del usuario de compra por medio del id
+         * 
+         * Actualiza el precio total del carrito y la cantidad total de items
+         * 
+         * Debe estar autenticado como 'user'
+         */
         removeFromCart: async (parent, { productId }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'user') {
                 throw new Error('Not authenticated as user');            }
@@ -129,6 +183,13 @@ const shoppingResolvers: IResolvers = {
 
             throw new Error('Product not found in cart');
         },
+        /**
+         * Actualiza la cantidad del producto en el carrito del usuario
+         * 
+         * Actualiza el precio total del carrito y la cantidad total de items
+         * 
+         * Debe estar autenticado como 'user'
+         */
         updateCartItemQuantity: async (parent, { productId, quantity }, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'user') {
                 throw new Error('Not authenticated as user');
@@ -167,6 +228,13 @@ const shoppingResolvers: IResolvers = {
 
             throw new Error('Product not found in cart');
         },
+        /**
+         * Elimina todos los elementos del carrito del usuario
+         * 
+         * Actualiza el precio total del carrito y la cantidad total de items
+         * 
+         * Debe estar autenticado como 'user'
+         */
         clearCart: async (parent, args, context: { db: Db, user: any }) => {
             if (!context.user || context.user.role !== 'user') {
                 throw new Error('Not authenticated as user');

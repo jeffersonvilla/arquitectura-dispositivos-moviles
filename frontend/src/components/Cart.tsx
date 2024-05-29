@@ -3,6 +3,13 @@ import { List, Button, InputNumber, message } from 'antd';
 import axiosConfig from '../axiosConfig';
 import { updateCartMutation, getCartQuery, deleteFromCartMutation, clearCartMutation } from '../queriesAndMutations/cart';
 
+/**
+ * Componente para listar los productos del carrito de compras del usuario
+ * Con funcionalidad para cambiar la cantidad de los productos, eliminar productos del carrito
+ * y limpiar el carrito de compras (Eliminar todos los productos)
+ * 
+ * Emplea los query y mutaciones definidos en el folder queriesAndMutations (cart)
+ */
 const Cart: React.FC = () => {
     const [cartItems, setCartItems] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -10,6 +17,9 @@ const Cart: React.FC = () => {
     const [cartTotalPrice, setCartTotalPrice] = useState<number>(0);
     const [cartTotalQuantity, setCartTotalQuantity] = useState<number>(0);
 
+    /**
+     * Trae los items e información del carrito de compra del usuario
+     */
     const fetchCart = async () => {
         try {
 
@@ -25,6 +35,9 @@ const Cart: React.FC = () => {
         }
     };
 
+    /**
+     * Actualiza el carrito cada 2 segundos
+     */
     useEffect(() => {
         fetchCart();
 
@@ -36,6 +49,10 @@ const Cart: React.FC = () => {
 
     }, []);
 
+    /**
+     * Actualiza la cantidad de un producto en el carrito del usuario por medio del id
+     * 
+     */
     const handleUpdateQuantity = async (productId: string, quantity: number) => {
         try { 
 
@@ -56,6 +73,9 @@ const Cart: React.FC = () => {
         }
     };
 
+    /**
+     * Elimina un item del carrito de compras de usuario por medio del id
+     */
     const handleDeleteItem = async (productId: string) => {
         try {
 
@@ -71,6 +91,9 @@ const Cart: React.FC = () => {
         }
     };
 
+    /**
+     * Elimina todos los items de carrito del usuario
+     */
     const handleClearCart = async () => {
         try {
 
